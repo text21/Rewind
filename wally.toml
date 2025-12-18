@@ -3,7 +3,7 @@ name = "text21/rewind"
 version = "1.0.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
-exclude = ["docs/**", "Packages/**", "DevPackages/**", ".github/**", "*.md", "selene.toml"]
+exclude = ["docs/**", ".github/**", "*.md"]
 
 [dependencies]
 trove = "sleitnick/trove@1.8.0"
