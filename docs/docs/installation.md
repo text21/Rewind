@@ -19,15 +19,11 @@ Then run:
 wally install
 ```
 
-## Manual Installation
+## Or Install RBXM
 
 1. Download the latest release from GitHub
 2. Place the `Rewind` folder in `ReplicatedStorage`
-3. Install dependencies:
-   - [Promise](https://github.com/evaera/roblox-lua-promise)
-   - [Signal](https://github.com/sleitnick/signal)
-   - [Trove](https://github.com/sleitnick/trove)
-   - [t](https://github.com/osyrisrblx/t) (optional, for type validation)
+3. Install RBXM File:
 
 ## Dependencies
 
