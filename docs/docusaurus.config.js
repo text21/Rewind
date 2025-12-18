@@ -12,6 +12,7 @@ const config = {
 
   organizationName: "text21",
   projectName: "Rewind",
+  trailingSlash: false,
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
