@@ -1,0 +1,100 @@
+---
+sidebar_position: 3
+---
+
+# Installation
+
+## Using Wally (Recommended)
+
+Add Rewind to your `wally.toml`:
+
+```toml
+[dependencies]
+Rewind = "text21/rewind@1.0.0"
+```
+
+Then run:
+
+```bash
+wally install
+```
+
+## Manual Installation
+
+1. Download the latest release from GitHub
+2. Place the `Rewind` folder in `ReplicatedStorage`
+3. Install dependencies:
+   - [Promise](https://github.com/evaera/roblox-lua-promise)
+   - [Signal](https://github.com/sleitnick/signal)
+   - [Trove](https://github.com/sleitnick/trove)
+   - [t](https://github.com/osyrisrblx/t) (optional, for type validation)
+
+## Dependencies
+
+Rewind requires the following packages:
+
+| Package | Version | Purpose                          |
+| ------- | ------- | -------------------------------- |
+| Promise | ^4.0.0  | Async operations                 |
+| Signal  | ^2.0.0  | Event handling                   |
+| Trove   | ^1.0.0  | Cleanup management               |
+| t       | ^3.0.0  | Runtime type checking (optional) |
+
+## Project Configuration
+
+### Rojo Configuration
+
+Add to your `default.project.json`:
+
+```json
+{
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Packages": {
+        "$path": "Packages"
+      },
+      "Rewind": {
+        "$path": "src/shared/Rewind"
+      }
+    }
+  }
+}
+```
+
+### Creating RemoteEvents
+
+Rewind requires specific RemoteEvents. They're auto-created if missing, but you can pre-create them:
+
+```lua
+-- In ReplicatedStorage.Remotes
+local remotes = Instance.new("Folder")
+remotes.Name = "RewindRemotes"
+remotes.Parent = ReplicatedStorage
+
+local clockSync = Instance.new("RemoteFunction")
+clockSync.Name = "ClockSync"
+clockSync.Parent = remotes
+
+local hitValidation = Instance.new("RemoteEvent")
+hitValidation.Name = "HitValidation"
+hitValidation.Parent = remotes
+```
+
+## Verify Installation
+
+Test that Rewind is installed correctly:
+
+```lua
+-- Server Script
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Rewind = require(ReplicatedStorage.Rewind)
+
+print("Rewind version:", Rewind.Version) -- Should print version
+print("Server module:", Rewind.Server) -- Should print table
+```
+
+## Next Steps
+
+Continue to [Quick Start](./quick-start) to set up your first hit validation!

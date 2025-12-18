@@ -1,0 +1,146 @@
+.heroBanner {
+  padding: 6rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #0a0e1a 0%, #0f1629 100%);
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+}
+
+.heroLogo {
+  font-size: 5rem;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.5));
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.heroDescription {
+  color: #64748b;
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 1.5rem auto;
+  line-height: 1.7;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.installCmd {
+  margin-top: 3rem;
+  padding: 1rem 2rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.installCmd code {
+  font-size: 1rem;
+  color: #93c5fd;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.features {
+  padding: 6rem 0;
+  background: #0a0e1a;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.sectionHeader h2 {
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+}
+
+.sectionHeader p {
+  color: #64748b;
+  font-size: 1.2rem;
+}
+
+.featureCol {
+  margin-bottom: 2rem;
+}
+
+.codeSection {
+  padding: 6rem 0;
+  background: linear-gradient(180deg, #0f1629 0%, #0a0e1a 100%);
+}
+
+.codeSection h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.codeSection p {
+  color: #94a3b8;
+  line-height: 1.7;
+}
+
+.checkList {
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+}
+
+.checkList li {
+  color: #60a5fa;
+  margin: 0.75rem 0;
+  font-size: 1.1rem;
+}
+
+.codeBlock {
+  background: #0c1222 !important;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: 12px;
+  padding: 1.5rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  overflow-x: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3),
+              0 0 60px rgba(59, 130, 246, 0.1);
+}
+
+@media screen and (max-width: 996px) {
+  .heroBanner {
+    padding: 4rem 1rem;
+    min-height: auto;
+  }
+
+  .heroLogo {
+    font-size: 3rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .codeSection .row {
+    flex-direction: column;
+  }
+}

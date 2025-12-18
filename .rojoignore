@@ -1,0 +1,7 @@
+Packages/**/*.project.json
+DevPackages/**/*.project.json
+
+Packages/**/test*/**
+DevPackages/**/test*/**
+Packages/**/tests/**
+DevPackages/**/tests/*

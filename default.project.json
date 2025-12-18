@@ -1,0 +1,18 @@
+{
+  "name": "RewindDemo",
+  "tree": {
+    "$className": "DataModel",
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Packages": { "$path": "Packages" },
+      "DevPackages": { "$path": "DevPackages" },
+      "Rewind": { "$path": "src/shared/Rewind" }
+    },
+    "ServerScriptService": {
+      "$path": "src/server"
+    },
+    "StarterPlayer": {
+      "StarterPlayerScripts": { "$path": "src/client" }
+    }
+  }
+}
