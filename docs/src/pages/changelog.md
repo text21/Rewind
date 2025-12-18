@@ -6,7 +6,7 @@ title: Changelog
 
 All notable changes to Rewind are documented here.
 
-## [1.0.0] - 2024-XX-XX
+## [1.0.0] - 2025-18-12
 
 ### 🎉 Initial Release
 
@@ -97,7 +97,7 @@ If you're adding lag compensation for the first time:
 
 | Version | Date       | Highlights      |
 | ------- | ---------- | --------------- |
-| 1.0.0   | 2024-XX-XX | Initial release |
+| 1.0.0   | 2025-18-12 | Initial release |
 
 ---
 

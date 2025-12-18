@@ -62,15 +62,15 @@ html, body {
 
 /* Markdown content styling */
 .markdown {
-  color: #e2e8f0;
+  color: #8b949e;
 }
 
 .markdown h1, .markdown h2, .markdown h3, .markdown h4, .markdown h5, .markdown h6 {
-  color: #f8fafc;
+  color: #c9d1d9;
 }
 
 .markdown p, .markdown li {
-  color: #cbd5e1;
+  color: #8b949e;
 }
 
 .markdown a {
@@ -78,7 +78,16 @@ html, body {
 }
 
 .markdown strong {
-  color: #f1f5f9;
+  color: #c9d1d9;
+}
+
+/* General text color */
+body, .main-wrapper, article, p, li, span {
+  color: #8b949e;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #c9d1d9 !important;
 }
 
 /* Navbar blur effect */
@@ -461,22 +470,27 @@ html, body {
 
 /* Tables (all pages) */
 table {
-  background: #0f1629 !important;
-  border: 1px solid rgba(59, 130, 246, 0.1) !important;
+  background: #161b22 !important;
+  border: 1px solid #30363d !important;
+  border-collapse: collapse !important;
 }
 
 th {
-  background: rgba(59, 130, 246, 0.1) !important;
-  color: #e2e8f0 !important;
+  background: #1c2128 !important;
+  color: #c9d1d9 !important;
+  border: 1px solid #30363d !important;
+  padding: 0.75rem 1rem !important;
 }
 
 td {
-  border-color: rgba(59, 130, 246, 0.1) !important;
-  color: #cbd5e1 !important;
+  border: 1px solid #30363d !important;
+  color: #8b949e !important;
+  padding: 0.75rem 1rem !important;
+  background: #0d1117 !important;
 }
 
-tr:nth-child(even) {
-  background: rgba(59, 130, 246, 0.03) !important;
+tr:nth-child(even) td {
+  background: #161b22 !important;
 }
 
 /* Code blocks (all pages) */
@@ -517,3 +531,131 @@ blockquote {
 hr {
   border-color: rgba(59, 130, 246, 0.1);
 }
+
+/* ===== ROBLOX STUDIO SYNTAX HIGHLIGHTING ===== */
+
+/* Code block base styling */
+pre[class*="language-lua"],
+pre[class*="language-luau"] {
+  background: #1e1e1e !important;
+  border: 1px solid #333 !important;
+  border-radius: 8px;
+}
+
+/* Prism token overrides for Roblox-style colors */
+
+/* Keywords: local, function, if, then, else, end, return, for, while, do, repeat, until, in, and, or, not, true, false, nil */
+.token.keyword {
+  color: #f86d7c !important; /* Roblox pink/red for keywords */
+}
+
+/* Built-in globals and functions */
+.token.builtin,
+.token.class-name {
+  color: #84d6f7 !important; /* Cyan for built-ins like game, workspace */
+}
+
+/* Functions */
+.token.function {
+  color: #84d6f7 !important; /* Cyan for function names */
+}
+
+/* Strings */
+.token.string {
+  color: #aad94c !important; /* Green for strings */
+}
+
+/* Numbers */
+.token.number {
+  color: #ffc266 !important; /* Orange for numbers */
+}
+
+/* Comments */
+.token.comment {
+  color: #666666 !important; /* Gray for comments */
+  font-style: italic;
+}
+
+/* Operators */
+.token.operator {
+  color: #e0e0e0 !important; /* Light gray for operators */
+}
+
+/* Punctuation (brackets, commas, etc.) */
+.token.punctuation {
+  color: #cccccc !important;
+}
+
+/* Booleans (true, false) and nil */
+.token.boolean,
+.token.nil {
+  color: #f86d7c !important; /* Same as keywords */
+}
+
+/* Variables and identifiers */
+.token.variable {
+  color: #e0e0e0 !important; /* White/light gray */
+}
+
+/* Property access */
+.token.property {
+  color: #e0e0e0 !important;
+}
+
+/* Table/object keys */
+.token.attr-name,
+.token.key {
+  color: #e0e0e0 !important;
+}
+
+/* Self/this references */
+.token.self {
+  color: #84d6f7 !important;
+}
+
+/* Method calls - make them stand out */
+.token.method {
+  color: #84d6f7 !important;
+}
+
+/* Inline code styling */
+:not(pre) > code {
+  background: rgba(248, 109, 124, 0.1) !important;
+  border: 1px solid rgba(248, 109, 124, 0.2) !important;
+  color: #f86d7c !important;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* Code block container */
+.prism-code {
+  background: #1e1e1e !important;
+}
+
+/* Line highlighting */
+.docusaurus-highlight-code-line {
+  background-color: rgba(132, 214, 247, 0.1) !important;
+  display: block;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  border-left: 3px solid #84d6f7;
+}
+
+/* Code title bar */
+.codeBlockTitle_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-Content-styles-module {
+  background: #2d2d2d !important;
+  border-bottom: 1px solid #444 !important;
+  color: #cccccc !important;
+}
+
+/* Copy button */
+.copyButton_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-CopyButton-styles-module {
+  color: #888 !important;
+}
+
+.copyButton_node_modules-\@docusaurus-theme-classic-lib-theme-CodeBlock-CopyButton-styles-module:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
