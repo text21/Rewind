@@ -1,8 +1,9 @@
 [package]
-name = "akira/rewind"
-version = "0.1.0"
+name = "text21/rewind"
+version = "1.0.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
+exclude = ["docs/**", "Packages/**", "DevPackages/**", ".github/**", "*.md", "selene.toml"]
 
 [dependencies]
 trove = "sleitnick/trove@1.8.0"
