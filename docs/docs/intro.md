@@ -87,4 +87,4 @@ end
 
 ## Getting Started
 
-Ready to integrate Rewind into your game? Head to the [Getting Started](./getting-started) guide!
+Ready to integrate Rewind into your game? Head to the [Getting Started](getting-started) guide!
