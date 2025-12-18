@@ -86,7 +86,7 @@ If you're migrating from a custom solution:
 
 If you're adding lag compensation for the first time:
 
-1. Follow the [Quick Start](./docs/quick-start) guide
+1. Follow the [Quick Start](/docs/quick-start) guide
 2. Start with default config
 3. Test with simulated lag
 4. Tune tolerances for your game feel

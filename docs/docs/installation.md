@@ -97,4 +97,4 @@ print("Server module:", Rewind.Server) -- Should print table
 
 ## Next Steps
 
-Continue to [Quick Start](./quick-start) to set up your first hit validation!
+Continue to [Quick Start](/docs/quick-start) to set up your first hit validation!

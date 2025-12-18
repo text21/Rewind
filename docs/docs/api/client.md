@@ -124,7 +124,7 @@ end)
 Client.ClockSync: ClockSyncModule
 ```
 
-Access to clock synchronization. See [ClockSync API](./clock-sync).
+Access to clock synchronization. See [ClockSync API](/docs/api/clock-sync).
 
 ---
 

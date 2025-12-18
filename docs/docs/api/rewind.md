@@ -28,7 +28,7 @@ The current version of Rewind.
 Rewind.Server: ServerModule
 ```
 
-Server-side module. See [Server API](./server).
+Server-side module. See [Server API](/docs/api/server).
 
 ---
 
@@ -38,7 +38,7 @@ Server-side module. See [Server API](./server).
 Rewind.Client: ClientModule
 ```
 
-Client-side module. See [Client API](./client).
+Client-side module. See [Client API](/docs/api/client).
 
 ---
 
@@ -48,7 +48,7 @@ Client-side module. See [Client API](./client).
 Rewind.ClockSync: ClockSyncModule
 ```
 
-Clock synchronization module. See [ClockSync API](./clock-sync).
+Clock synchronization module. See [ClockSync API](/docs/api/clock-sync).
 
 ---
 
@@ -58,7 +58,7 @@ Clock synchronization module. See [ClockSync API](./clock-sync).
 Rewind.Types: TypeDefinitions
 ```
 
-Type definitions and enums. See [Types](./types).
+Type definitions and enums. See [Types](/docs/api/types).
 
 ---
 
@@ -68,7 +68,7 @@ Type definitions and enums. See [Types](./types).
 Rewind.Config: ConfigTable
 ```
 
-Configuration values. See [Config](./config).
+Configuration values. See [Config](/docs/api/config).
 
 ---
 
@@ -78,7 +78,7 @@ Configuration values. See [Config](./config).
 Rewind.RigAdapter: RigAdapterModule
 ```
 
-Character rig utilities. See [RigAdapter API](./rig-adapter).
+Character rig utilities. See [RigAdapter API](/docs/api/rig-adapter).
 
 ---
 
@@ -88,7 +88,7 @@ Character rig utilities. See [RigAdapter API](./rig-adapter).
 Rewind.HitboxProfile: HitboxProfiles
 ```
 
-Built-in hitbox profiles. See [HitboxProfile](./hitbox-profile).
+Built-in hitbox profiles. See [HitboxProfile](/docs/api/hitbox-profile).
 
 ---
 

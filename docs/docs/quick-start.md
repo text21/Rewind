@@ -137,6 +137,6 @@ end
 
 ## What's Next?
 
-- [Clock Sync Guide](./guides/clock-sync) - Understand time synchronization
-- [Weapon Profiles](./guides/weapon-profiles) - Configure per-weapon settings
-- [API Reference](./api/rewind) - Full API documentation
+- [Clock Sync Guide](/docs/guides/clock-sync) - Understand time synchronization
+- [Weapon Profiles](/docs/guides/weapon-profiles) - Configure per-weapon settings
+- [API Reference](/docs/api/rewind) - Full API documentation

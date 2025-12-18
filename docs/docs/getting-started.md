@@ -53,6 +53,6 @@ src/
 
 ## Next Steps
 
-- [Installation](./installation) - Install Rewind with Wally
-- [Quick Start](./quick-start) - Basic integration example
-- [Weapon Profiles](./guides/weapon-profiles) - Configure per-weapon settings
+- [Installation](/docs/installation) - Install Rewind with Wally
+- [Quick Start](/docs/quick-start) - Basic integration example
+- [Weapon Profiles](/docs/guides/weapon-profiles) - Configure per-weapon settings
