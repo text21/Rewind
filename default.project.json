@@ -1,5 +1,5 @@
 {
-  "name": "RewindDemo",
+  "name": "rewind",
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {
