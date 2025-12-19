@@ -93,12 +93,8 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "Discord",
-                href: "#",
-              },
-              {
                 label: "DevForum",
-                href: "#",
+                href: "https://devforum.roblox.com/t/rewind-server-authoritative-lag-compensated-hit-validation/4160622/11",
               },
             ],
           },
