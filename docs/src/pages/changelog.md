@@ -58,11 +58,19 @@ First public release of Rewind - a server-authoritative lag compensation framewo
 
 ## Planned Features
 
-### v1.1.0
+### v1.1.0 - Physics Replication (Major Update)
 
-- [ ] Interpolated snapshots for smoother rewind
-- [ ] Configurable hit priority per body part
-- [ ] Network bandwidth optimization
+- [ ] **Interpolated snapshots** - smoother rewind
+- [ ] **Configurable Hit Priority** - per body part
+- [ ] **Custom Character Replication** - Replace Roblox's default physics replication
+- [ ] **Entity Registry** - Register players/NPCs for custom replication
+- [ ] **Server Replicator** - Broadcasts positions at configurable tick rate
+- [ ] **Client Interpolator** - Smooth interpolation between network updates
+- [ ] **State Buffer** - Unified history for interpolation AND hit validation
+- [ ] **Bandwidth Optimization** - Delta compression, proximity-based updates
+- [ ] **Network Ownership** - Client-authoritative movement with server reconciliation
+- [ ] **NPC Support** - Full replication support for AI entities
+- [ ] **Configurable Tick Rate** - Control network update frequency
 
 ### v1.2.0
 
