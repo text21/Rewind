@@ -21,7 +21,7 @@ wally install
 
 ## Or Install RBXM
 
-1. Download the latest release: [RewindRelease.rbxm](https://github.com/text21/Rewind/raw/main/docs/RobloxBuilds/RewindRelease.rbxm)
+1. Download the latest release: [RewindRelease.rbxm](https://github.com/text21/Rewind/raw/main/docs/RobloxBuilds/Rewindv1.1.0.rbxm)
 2. Insert the RBXM file into `ReplicatedStorage` in Roblox Studio
 3. Done! The module is ready to use
 
