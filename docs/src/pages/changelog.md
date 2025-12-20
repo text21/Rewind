@@ -124,9 +124,10 @@ If you're adding lag compensation for the first time:
 
 ## Version History
 
-| Version | Date       | Highlights      |
-| ------- | ---------- | --------------- |
-| 1.0.0   | 2025-18-12 | Initial release |
+| Version | Date       | Highlights                         |
+| ------- | ---------- | ---------------------------------- |
+| 1.0.0   | 2025-18-12 | Initial release                    |
+| 1.1.0   | 2025-20-12 | Physics Replication (Major Update) |
 
 ---
 
