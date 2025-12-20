@@ -39,9 +39,31 @@ local function ensureRemoteEvent(name: string): RemoteEvent
 	return folder:WaitForChild(name) :: RemoteEvent
 end
 
+local function ensureUnreliableRemoteEvent(name: string): UnreliableRemoteEvent
+	local folder = getFolder()
+	local existing = folder:FindFirstChild(name)
+	if existing and existing:IsA("UnreliableRemoteEvent") then
+		return existing
+	end
+
+	if RunService:IsServer() then
+		local re = Instance.new("UnreliableRemoteEvent")
+		re.Name = name
+		re.Parent = folder
+		return re
+	end
+
+	return folder:WaitForChild(name) :: UnreliableRemoteEvent
+end
+
 function Remotes.EnsureAll()
 	ensureRemoteEvent("DebugData")
 	ensureRemoteEvent("DebugCmd")
+	ensureUnreliableRemoteEvent("StateUpdate")
+	ensureRemoteEvent("StateCorrection")
+	ensureUnreliableRemoteEvent("ClientState")
+	ensureRemoteEvent("EntityAdded")
+	ensureRemoteEvent("EntityRemoved")
 end
 
 function Remotes.DebugData(): RemoteEvent
@@ -50,6 +72,46 @@ end
 
 function Remotes.DebugCmd(): RemoteEvent
 	return ensureRemoteEvent("DebugCmd")
+end
+
+--[[
+	StateUpdate - Server broadcasts entity states to clients (unreliable for performance)
+	Payload: { [entityId]: CompressedState }
+]]
+function Remotes.StateUpdate(): UnreliableRemoteEvent
+	return ensureUnreliableRemoteEvent("StateUpdate")
+end
+
+--[[
+	StateCorrection - Server sends authoritative correction to client (reliable)
+	Payload: CompressedState
+]]
+function Remotes.StateCorrection(): RemoteEvent
+	return ensureRemoteEvent("StateCorrection")
+end
+
+--[[
+	ClientState - Client sends own state to server (unreliable for performance)
+	Payload: CompressedState
+]]
+function Remotes.ClientState(): UnreliableRemoteEvent
+	return ensureUnreliableRemoteEvent("ClientState")
+end
+
+--[[
+	EntityAdded - Server notifies clients when an entity joins replication
+	Payload: { id: string, entityType: EntityType, modelPath: string }
+]]
+function Remotes.EntityAdded(): RemoteEvent
+	return ensureRemoteEvent("EntityAdded")
+end
+
+--[[
+	EntityRemoved - Server notifies clients when an entity leaves replication
+	Payload: string (entityId)
+]]
+function Remotes.EntityRemoved(): RemoteEvent
+	return ensureRemoteEvent("EntityRemoved")
 end
 
 return Remotes

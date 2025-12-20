@@ -31,6 +31,7 @@ const sidebars = {
         "api/rig-adapter",
         "api/hitbox-profile",
         "api/clock-sync",
+        "api/replication",
       ],
     },
   ],

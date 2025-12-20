@@ -13,6 +13,61 @@ export type RejectReason =
 
 export type ValidationMode = "Ray" | "Sphere" | "Capsule" | "Cone" | "Fan"
 
+export type EntityType = "Player" | "NPC"
+
+export type EntityInfo = {
+	id: string,
+	entityType: EntityType,
+	model: Model,
+	player: Player?,
+	priority: number,
+	lastUpdate: number,
+}
+
+export type EntityState = {
+	t: number,
+	rootCf: CFrame,
+	velocity: Vector3,
+	parts: { [string]: CFrame }?,
+}
+
+export type CompressedState = {
+	t: number,
+	pos: Vector3,
+	rot: { number },
+	vel: Vector3?,
+}
+
+export type ReplicationConfig = {
+	enabled: boolean?,
+	tickRate: number?,
+	interpolationDelay: number?,
+	maxExtrapolation: number?,
+
+	deltaCompression: boolean?,
+	proximityBased: boolean?,
+	nearDistance: number?,
+	farDistance: number?,
+	farTickDivisor: number?,
+
+	clientAuthoritative: boolean?,
+	reconciliationThreshold: number?,
+}
+
+export type InterpolationState = {
+	entity: EntityInfo,
+	buffer: { EntityState },
+	bufferSize: number,
+	renderTime: number,
+	lastReceivedTime: number,
+}
+
+export type HitPriority = {
+	partName: string,
+	priority: number,
+	damageMultiplier: number?,
+}
+
 export type Options = {
 	enabled: boolean?,
 	snapshotHz: number?,
@@ -27,26 +82,25 @@ export type Options = {
 	debug: {
 		enabled: boolean?,
 	}?,
+	replication: ReplicationConfig?,
 }
 
 export type WeaponProfile = {
 	id: string,
-	-- Timing
 	maxRewindMs: number?,
-	-- Distance / Range
 	maxDistance: number?,
 	extraForgivenessStuds: number?,
-	-- Melee-specific tuning
+
 	meleeRange: number?,
 	meleeAngleDeg: number?,
 	meleeRays: number?,
+
 	capsuleRadius: number?,
 	capsuleSteps: number?,
-	-- Flags
 	requireLineOfSight: boolean?,
-	isMelee: boolean?, -- if true, disables clientShotId duplicate check
-	-- Scaled avatar support
-	scaleMultiplier: number?, -- scale hitboxes by this factor
+
+	isMelee: boolean?,
+	scaleMultiplier: number?,
 }
 
 export type ValidateRayParams = {
@@ -100,7 +154,6 @@ export type ValidateFanParams = {
 export type ValidateMeleeArcParams = ValidateArcParams
 export type ValidateMeleeFanParams = ValidateFanParams
 
--- Unified params for Rewind.Validate() dispatcher
 export type ValidateParams = {
 	mode: ValidationMode,
 	weaponId: string?,
@@ -138,11 +191,11 @@ export type HitResult = {
 	reason: RejectReason,
 }
 
--- Re-export types for convenience
 export type Profile = {
 	id: string,
 	parts: { string },
 	forgiveness: { [string]: number }?,
+	hitPriority: { [string]: HitPriority }?,
 }
 
 return nil

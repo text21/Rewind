@@ -1,6 +1,10 @@
 --!strict
 local Config = {}
 
+-- Version info
+Config.Version = "1.1.0"
+Config.VersionName = "Physics Replication"
+
 Config.Defaults = {
 	enabled = true,
 

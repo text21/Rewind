@@ -15,10 +15,10 @@ type Options = {
 
 local function localNow(): number
 	local ok, t = pcall(function()
-		return os.clock()
+		return workspace:GetServerTimeNow()
 	end)
 	if ok then return t end
-	return tick()
+	return os.clock()
 end
 
 function Client.new(opts: Options?)

@@ -210,6 +210,92 @@ type DebugInfo = {
 
 ---
 
+## Replication Types (v1.1.0)
+
+### EntityType
+
+```lua
+type EntityType = "Player" | "NPC"
+```
+
+### EntityInfo
+
+Information about a registered entity.
+
+```lua
+type EntityInfo = {
+    id: string,              -- Unique entity ID (e.g., "player_123")
+    entityType: EntityType,  -- "Player" or "NPC"
+    model: Model,            -- The character/NPC model
+    player: Player?,         -- Player instance (nil for NPCs)
+    priority: number,        -- Bandwidth priority (higher = more updates)
+    lastUpdate: number,      -- Last update timestamp
+}
+```
+
+### EntityState
+
+Captured state of an entity at a point in time.
+
+```lua
+type EntityState = {
+    t: number,                      -- Server timestamp
+    rootCf: CFrame,                 -- HumanoidRootPart CFrame
+    velocity: Vector3,              -- Movement velocity
+    parts: { [string]: CFrame }?,   -- Optional detailed part CFrames
+}
+```
+
+### CompressedState
+
+Network-optimized entity state.
+
+```lua
+type CompressedState = {
+    t: number,             -- Server timestamp
+    pos: Vector3,          -- Position
+    rot: { number },       -- Euler angles {rx, ry, rz}
+    vel: Vector3?,         -- Velocity (optional)
+}
+```
+
+### ReplicationConfig
+
+Configuration for the replication system.
+
+```lua
+type ReplicationConfig = {
+    enabled: boolean?,               -- Enable replication (default: true)
+    tickRate: number?,               -- Updates per second (default: 20)
+    interpolationDelay: number?,     -- Client render delay in ms (default: 100)
+    maxExtrapolation: number?,       -- Max prediction time in ms (default: 200)
+
+    -- Bandwidth optimization
+    deltaCompression: boolean?,      -- Only send changes (default: true)
+    proximityBased: boolean?,        -- Reduce distant updates (default: true)
+    nearDistance: number?,           -- Full update distance (default: 100)
+    farDistance: number?,            -- Minimum update distance (default: 500)
+    farTickDivisor: number?,         -- Far entity tick divisor (default: 4)
+
+    -- Network ownership
+    clientAuthoritative: boolean?,   -- Client controls own movement (default: true)
+    reconciliationThreshold: number?, -- Drift before correction (default: 5)
+}
+```
+
+### HitPriority
+
+Per-part hit priority configuration.
+
+```lua
+type HitPriority = {
+    priority: number,          -- Higher = preferred target
+    damageMultiplier: number?, -- Optional damage scaling
+}
+```
+
+---
+
 ## Usage Example
 
 ```lua
@@ -232,4 +318,12 @@ local myWeapon: Types.WeaponProfile = {
     capsuleRadius = 0.4,
     isMelee = false,
 }
+
+-- v1.1.0: Configure replication
+local replicationConfig: Types.ReplicationConfig = {
+    tickRate = 20,
+    deltaCompression = true,
+    proximityBased = true,
+}
+Rewind.StartReplication(replicationConfig)
 ```

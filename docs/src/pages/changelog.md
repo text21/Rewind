@@ -56,21 +56,42 @@ First public release of Rewind - a server-authoritative lag compensation framewo
 
 ---
 
+## [1.1.0] - Physics Replication (Major Update) 🚀
+
+### New Features
+
+- [x] **Interpolated snapshots** - Smooth rewind sampling with hermite interpolation
+- [x] **Configurable Hit Priority** - Per body part priority and damage multipliers
+- [x] **Custom Character Replication** - Replace Roblox's default physics replication
+- [x] **Entity Registry** - Register players/NPCs for custom replication
+- [x] **Server Replicator** - Broadcasts positions at configurable tick rate
+- [x] **Client Interpolator** - Smooth interpolation between network updates
+- [x] **State Buffer** - Unified history for interpolation AND hit validation
+- [x] **Bandwidth Optimization** - Delta compression, proximity-based updates
+- [x] **Network Ownership** - Client-authoritative movement with server reconciliation
+- [x] **NPC Support** - Full replication support for AI entities
+- [x] **Configurable Tick Rate** - Control network update frequency (default 20 Hz)
+
+### API Additions
+
+- `Rewind.Replication` - New replication module
+- `Rewind.StartReplication(config)` - Start server-side replication
+- `Rewind.StartReplicationClient(config)` - Start client interpolation
+- `Rewind.RegisterPlayerForReplication(player)` - Register player for custom replication
+- `Rewind.RegisterNPCForReplication(model)` - Register NPC for custom replication
+- `HitboxProfile.GetHitPriority(profileId, partName)` - Get hit priority for body part
+- `HitboxProfile.CompareByPriority(profileId, partA, partB)` - Compare parts by priority
+
+### New Remotes
+
+- `StateUpdate` (UnreliableRemoteEvent) - Server broadcasts entity states
+- `StateCorrection` (RemoteEvent) - Server sends authoritative corrections
+- `ClientState` (UnreliableRemoteEvent) - Client sends own state
+- `EntityAdded` / `EntityRemoved` - Entity lifecycle events
+
+---
+
 ## Planned Features
-
-### v1.1.0 - Physics Replication (Major Update)
-
-- [ ] **Interpolated snapshots** - smoother rewind
-- [ ] **Configurable Hit Priority** - per body part
-- [ ] **Custom Character Replication** - Replace Roblox's default physics replication
-- [ ] **Entity Registry** - Register players/NPCs for custom replication
-- [ ] **Server Replicator** - Broadcasts positions at configurable tick rate
-- [ ] **Client Interpolator** - Smooth interpolation between network updates
-- [ ] **State Buffer** - Unified history for interpolation AND hit validation
-- [ ] **Bandwidth Optimization** - Delta compression, proximity-based updates
-- [ ] **Network Ownership** - Client-authoritative movement with server reconciliation
-- [ ] **NPC Support** - Full replication support for AI entities
-- [ ] **Configurable Tick Rate** - Control network update frequency
 
 ### v1.2.0
 

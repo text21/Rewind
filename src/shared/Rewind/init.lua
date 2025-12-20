@@ -35,7 +35,9 @@ Rewind.__index = Rewind
 
 local _server = nil
 
--- Expose submodules
+Rewind.Version = Config.Version
+Rewind.VersionName = Config.VersionName
+
 Rewind.Client = require(script.Client.Client)
 Rewind.ClockSync = require(script.ClockSync)
 Rewind.HitboxProfile = HitboxProfile
@@ -43,7 +45,8 @@ Rewind.RigAdapter = RigAdapter
 Rewind.Types = Types
 Rewind.Config = Config
 
--- Expose Validator for direct access (advanced usage)
+Rewind.Replication = require(script.Replication)
+
 local Validator = nil
 if RunService:IsServer() then
 	Validator = require(script.Server.Validator)
@@ -259,6 +262,55 @@ function Rewind.CreateParamsFromWeapon(weaponId: string, baseParams: any): any
 	end
 
 	return merged
+end
+
+--[[
+	Start the replication system (server-side).
+	This enables custom character replication with interpolation and hit validation.
+
+	@param config ReplicationConfig options
+]]
+function Rewind.StartReplication(config: Types.ReplicationConfig?)
+	Rewind.Replication.Start(config)
+end
+
+--[[
+	Start the client-side interpolation system.
+
+	@param config ReplicationConfig options
+]]
+function Rewind.StartReplicationClient(config: Types.ReplicationConfig?)
+	Rewind.Replication.StartClient(config)
+end
+
+--[[
+	Register a player for custom replication (server).
+	The player's character will be replicated using Rewind's system instead of Roblox's default.
+
+	@param player The player to register
+	@param priority Optional priority level (higher = more bandwidth, default 5)
+]]
+function Rewind.RegisterPlayerForReplication(player: Player, priority: number?)
+	Rewind.Replication.RegisterPlayer(player, priority)
+end
+
+--[[
+	Register an NPC for custom replication (server).
+
+	@param model The NPC model
+	@param priority Optional priority level (default 3)
+]]
+function Rewind.RegisterNPCForReplication(model: Model, priority: number?)
+	Rewind.Replication.RegisterNPC(model, priority)
+end
+
+--[[
+	Unregister an entity from custom replication.
+
+	@param modelOrPlayer The model or player to unregister
+]]
+function Rewind.UnregisterFromReplication(modelOrPlayer: Model | Player)
+	Rewind.Replication.Unregister(modelOrPlayer)
 end
 
 return Rewind
