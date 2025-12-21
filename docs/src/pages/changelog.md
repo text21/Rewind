@@ -97,6 +97,8 @@ First public release of Rewind - a server-authoritative lag compensation framewo
 
 - [ ] Vehicle/mount support
 - [ ] Multiple hitbox layers (armor system)
+- [ ] DataStore
+- [ ] Movement Anomaly Detection
 
 ---
 
