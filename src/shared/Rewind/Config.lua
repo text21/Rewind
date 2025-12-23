@@ -2,8 +2,8 @@
 local Config = {}
 
 -- Version info
-Config.Version = "1.1.0"
-Config.VersionName = "Physics Replication"
+Config.Version = "1.2.0"
+Config.VersionName = "Anti-Cheat & Vehicles"
 
 Config.Defaults = {
 	enabled = true,

@@ -11,7 +11,6 @@ local RigAdapter = {}
 function RigAdapter.IsR15(character: Model): boolean
 	if not character then return false end
 
-	-- Try Humanoid.RigType first (most reliable)
 	local humanoid = character:FindFirstChildOfClass("Humanoid")
 	if humanoid then
 		local ok, rigType = pcall(function()
@@ -22,20 +21,17 @@ function RigAdapter.IsR15(character: Model): boolean
 		end
 	end
 
-	-- Fallback: check for R15-specific parts
 	local hasUpperTorso = character:FindFirstChild("UpperTorso") ~= nil
 	local hasLowerTorso = character:FindFirstChild("LowerTorso") ~= nil
 	if hasUpperTorso or hasLowerTorso then
 		return true
 	end
 
-	-- Check for R6 Torso (if present, it's R6)
 	local hasTorso = character:FindFirstChild("Torso") ~= nil
 	if hasTorso then
 		return false
 	end
 
-	-- Default to R15 if we can't determine
 	return true
 end
 
@@ -63,7 +59,6 @@ function RigAdapter.CollectParts(character: Model, partNames: { string }): { [st
 		local inst = character:FindFirstChild(name)
 		if inst and inst:IsA("BasePart") then
 			out[name] = inst
-		-- else: gracefully skip missing parts
 		end
 	end
 	return out

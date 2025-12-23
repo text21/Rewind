@@ -25,13 +25,29 @@ In networked games, there's always latency between what a player sees and what's
 
 ## Key Features
 
+### Core Lag Compensation
+
 - 🛡️ **Server-Authoritative** - All validation on server, never trust the client
 - ⏰ **Clock Synchronization** - Accurate time reconciliation between client and server
 - 🎯 **Multi-Mode Validation** - Raycast, projectile, capsule, and melee support
 - 🤖 **Automatic Rig Detection** - Built-in R6 and R15 hitbox profiles
 - 📏 **Scaled Avatar Support** - Proper hitbox scaling for custom character sizes
 - 🔧 **Debug Tools** - Real-time visualization with Iris debug panel
-- 🚫 **Anti-Abuse** - Duplicate detection, distance sanity, rate limiting
+
+### Physics Replication (v1.1.0)
+
+- 🔄 **Custom Replication** - Replace Roblox's default physics replication
+- 📡 **Entity Registry** - Register players and NPCs for custom replication
+- 🎮 **Client Interpolation** - Smooth interpolation between network updates
+- 📦 **Bandwidth Optimization** - Delta compression and proximity-based updates
+- ⚡ **Configurable Tick Rate** - Control network update frequency
+
+### Anti-Cheat & Vehicles (v1.2.0)
+
+- 🚗 **Vehicle & Mount Support** - Register vehicles with custom hitboxes and weak spots
+- 🛡️ **Armor System** - Multiple hitbox layers with damage reduction and regeneration
+- 📊 **DataStore Abuse Tracking** - Persistent abuse tracking with auto-kick/ban
+- 🏃 **Movement Validation** - Detect speed hacks, teleports, fly hacks, and noclip
 
 ## Quick Example
 

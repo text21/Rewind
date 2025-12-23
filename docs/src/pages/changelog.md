@@ -91,14 +91,112 @@ First public release of Rewind - a server-authoritative lag compensation framewo
 
 ---
 
+## [1.2.0] - Anti-Cheat & Vehicles 🛡️🚗
+
+### New Features
+
+- [x] **Vehicle & Mount Support** - Register vehicles with custom hitboxes, damage multipliers, and weak spots
+- [x] **Armor System** - Multiple hitbox layers with damage reduction, regeneration, and armor breaking
+- [x] **DataStore Abuse Tracking** - Persistent abuse tracking with automatic kick/ban enforcement
+- [x] **Movement Anomaly Detection** - Speed hack, teleport, fly hack, and noclip detection
+
+### Vehicle System
+
+- Register vehicles and mounts for hit validation
+- Custom hitboxes with damage multipliers and weak spots
+- Passenger protection and targeting
+- Mount rider registration
+- Vehicle damage and destruction events
+
+### Armor System
+
+- Define armor layers for hitbox parts
+- Configurable damage reduction (0-1 scale)
+- Armor regeneration over time
+- Layer breaking with minimum health thresholds
+- Armor penetration support in weapon profiles
+- Repair armor programmatically
+
+### Abuse Tracker
+
+- Automatic DataStore persistence
+- Track abuse reasons: speed_hack, teleport, aimbot, damage_exploit, clip, fly_hack, packet_manipulation
+- Configurable thresholds for warn/kick/ban
+- Auto-kick and auto-ban enforcement
+- `OnAbuseDetected` and `OnThresholdReached` events
+- Ban/unban players programmatically
+
+### Movement Validator
+
+- Speed hack detection with tolerance
+- Teleport detection with configurable distance threshold
+- Fly hack detection based on air time
+- Noclip detection through obstructed parts
+- Speed multiplier support for abilities
+- Violation tracking per player
+- `OnAnomalyDetected` event
+
+### API Additions
+
+**Vehicle API:**
+
+- `Rewind.RegisterVehicle(model, config)` - Register vehicle with custom hitboxes
+- `Rewind.UnregisterVehicle(model)` - Remove vehicle from registry
+- `Rewind.RegisterMount(model, config)` - Register mount (single rider)
+- `Rewind.AddPassengerToVehicle(vehicle, player, seat?)` - Add passenger
+- `Rewind.RemovePassengerFromVehicle(vehicle, player)` - Remove passenger
+- `Rewind.SetMountRider(mount, player?)` - Set or clear mount rider
+- `Rewind.GetPlayerVehicle(player)` - Get player's current vehicle/mount
+
+**Armor API:**
+
+- `Rewind.DefineArmor(entity, config)` - Define armor layers for entity
+- `Rewind.RemoveArmor(entity)` - Remove armor from entity
+- `Rewind.GetArmor(entity)` - Get current armor state
+- `Rewind.ApplyDamageWithArmor(entity, partName, damage, armorPenetration?)` - Apply damage through armor
+- `Rewind.RepairArmor(entity, partName?, amount?)` - Repair armor layers
+
+**Abuse Tracker API:**
+
+- `Rewind.StartAbuseTracking(config?)` - Start abuse tracking with DataStore
+- `Rewind.RecordAbuse(player, reason, details?)` - Record abuse incident
+- `Rewind.GetAbuseHistory(player)` - Get player's abuse history
+- `Rewind.IsPlayerBanned(player)` - Check if player is banned
+- `Rewind.BanPlayer(player, reason, duration?)` - Ban player
+- `Rewind.UnbanPlayer(userId)` - Unban player by UserId
+- `Rewind.OnAbuseDetected` - Signal fired on abuse detection
+- `Rewind.OnAbuseThresholdReached` - Signal fired when threshold reached
+
+**Movement Validator API:**
+
+- `Rewind.ConfigureMovementValidation(config)` - Configure movement validation
+- `Rewind.StartMovementMonitoring(player)` - Start monitoring player
+- `Rewind.StopMovementMonitoring(player)` - Stop monitoring player
+- `Rewind.ValidateMovement(player, position, velocity?)` - Validate movement
+- `Rewind.SetPlayerSpeedMultiplier(player, multiplier, duration?)` - Set speed multiplier
+- `Rewind.GetMovementViolations(player)` - Get violation count
+- `Rewind.ClearMovementViolations(player)` - Clear violations
+- `Rewind.OnMovementAnomaly` - Signal fired on anomaly detection
+
+### Type Additions
+
+- `VehicleHitbox`, `VehicleConfig`, `MountConfig`, `VehicleInfo`, `MountInfo`
+- `ArmorLayer`, `ArmorConfig`, `ArmorState`, `DamageResult`
+- `AbuseReason`, `AbuseRecord`, `PlayerAbuseHistory`, `AbuseConfig`
+- `AnomalyType`, `MovementValidationResult`, `MovementConfig`, `PlayerMovementState`
+- Updated `EntityType` to include "Vehicle" | "Mount"
+- Updated `RejectReason` to include "vehicle_blocked" | "armor_absorbed"
+- Updated `HitResult` with vehicle and armor information
+- Updated `WeaponProfile` with `armorPenetration` field
+
+---
+
 ## Planned Features
 
-### v1.2.0
+### v1.3.0
 
-- [ ] Vehicle/mount support
-- [ ] Multiple hitbox layers (armor system)
-- [ ] DataStore
-- [ ] Movement Anomaly Detection
+- [ ] Projectile simulation and validation
+- [ ] Area-of-effect (AoE) hit validation
 
 ---
 
@@ -130,6 +228,7 @@ If you're adding lag compensation for the first time:
 | ------- | ---------- | ---------------------------------- |
 | 1.0.0   | 2025-18-12 | Initial release                    |
 | 1.1.0   | 2025-20-12 | Physics Replication (Major Update) |
+| 1.2.0   | 2025-21-12 | Anti-Cheat & Vehicles              |
 
 ---
 

@@ -148,7 +148,6 @@ end
 	@return HitPriority or default values
 ]]
 function HitboxProfile.GetHitPriority(profileId: string?, partName: string): HitPriority
-	-- Check profile-specific priority first
 	if profileId then
 		local profile = profiles[profileId]
 		if profile and profile.hitPriority and profile.hitPriority[partName] then
@@ -156,13 +155,11 @@ function HitboxProfile.GetHitPriority(profileId: string?, partName: string): Hit
 		end
 	end
 
-	-- Fall back to defaults
 	local default = DEFAULT_HIT_PRIORITY[partName]
 	if default then
 		return default
 	end
 
-	-- Unknown part - return neutral priority
 	return { priority = 1, damageMultiplier = 1.0 }
 end
 

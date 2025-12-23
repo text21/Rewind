@@ -375,7 +375,6 @@ function Server:ValidateCapsule(player: Player, params)
 
 	local weapon, extraForgiveness, maxDist, allowHead = self:_resolveWeaponTuning(params.weaponId)
 
-	-- Weapon-mode aware duplicate check
 	if self:_checkDuplicate(pst, params, weapon, now) then
 		self.stats:Inc("rejects", "duplicate_shot")
 		self:_emitDebug(player, { reason="duplicate_shot", serverNow=now, rewindTo=now, usedRewindMs=0 })
@@ -389,7 +388,6 @@ function Server:ValidateCapsule(player: Player, params)
 	local a: Vector3, b: Vector3, radius: number = params.a, params.b, params.radius
 	local steps = params.steps or 10
 
-	-- Distance sanity check
 	local attackerPos = self:_getAttackerPosition(player)
 	if attackerPos then
 		local capsuleOrigin = a
@@ -414,13 +412,11 @@ function Server:ValidateCapsule(player: Player, params)
 	local bestChar: Model? = nil
 	local bestPoseParts = nil
 
-	-- Get scale multiplier for scaled avatar support
 	local scale = self:_getScaleMultiplier(weapon)
 
 	for character, ts in pairs(self.targets) do
 		local pose = Rewinder.Sample(ts.store, rewindTo)
 		if pose then
-			-- Apply scale for scaled avatar support
 			pose = self:_applyScaleToPose(pose, scale)
 
 			local r = Validator.CapsuleSweepPose(a, b, radius, pose, {
@@ -504,7 +500,6 @@ function Server:ValidateMeleeArc(player: Player, params)
 
 	local weapon, extraForgiveness, maxDist, allowHead = self:_resolveWeaponTuning(params.weaponId)
 
-	-- Melee weapons typically skip duplicate check (isMelee = true in weapon profile)
 	if self:_checkDuplicate(pst, params, weapon, now) then
 		self.stats:Inc("rejects", "duplicate_shot")
 		return { hit = false, serverNow = now, rewindTo = now, usedRewindMs = 0, reason = "duplicate_shot" }
@@ -518,10 +513,8 @@ function Server:ValidateMeleeArc(player: Player, params)
 	local range = weapon and weapon.meleeRange or params.range
 	local angleDeg = weapon and weapon.meleeAngleDeg or params.angleDeg
 
-	-- Distance sanity check for melee
 	local attackerPos = self:_getAttackerPosition(player)
 	if attackerPos then
-		-- For melee, check that origin is near the attacker
 		local originPos = originCf.Position
 		if not self:_checkDistanceSanity(attackerPos, originPos, 10, 5) then
 			self.stats:Inc("rejects", "out_of_range")
@@ -529,7 +522,6 @@ function Server:ValidateMeleeArc(player: Player, params)
 		end
 	end
 
-	-- Get scale multiplier for scaled avatar support
 	local scale = self:_getScaleMultiplier(weapon)
 
 	local hitData, hitChar = self:_bestOverTargets(rewindTo, function(pose)
@@ -591,7 +583,6 @@ function Server:ValidateMeleeFan(player: Player, params)
 
 	local weapon, extraForgiveness, maxDist, allowHead = self:_resolveWeaponTuning(params.weaponId)
 
-	-- Melee weapons typically skip duplicate check
 	if self:_checkDuplicate(pst, params, weapon, now) then
 		self.stats:Inc("rejects", "duplicate_shot")
 		return { hit = false, serverNow = now, rewindTo = now, usedRewindMs = 0, reason = "duplicate_shot" }
@@ -606,7 +597,6 @@ function Server:ValidateMeleeFan(player: Player, params)
 	local angleDeg = weapon and weapon.meleeAngleDeg or params.angleDeg
 	local rays = weapon and weapon.meleeRays or params.rays
 
-	-- Distance sanity check for melee
 	local attackerPos = self:_getAttackerPosition(player)
 	if attackerPos then
 		local originPos = originCf.Position
@@ -616,7 +606,6 @@ function Server:ValidateMeleeFan(player: Player, params)
 		end
 	end
 
-	-- Get scale multiplier for scaled avatar support
 	local scale = self:_getScaleMultiplier(weapon)
 
 	local hitData, hitChar, bestT = self:_bestOverTargets(rewindTo, function(pose)
@@ -746,7 +735,6 @@ function Server:ValidateRay(player: Player, params)
 
 	local weapon, extraForgiveness, maxDist, allowHead = self:_resolveWeaponTuning(params.weaponId)
 
-	-- Weapon-mode aware duplicate check (projectiles use clientShotId)
 	if self:_checkDuplicate(pst, params, weapon, now) then
 		self.stats:Inc("rejects", "duplicate_shot")
 		return { hit = false, serverNow = now, rewindTo = now, usedRewindMs = 0, reason = "duplicate_shot" }
@@ -763,10 +751,8 @@ function Server:ValidateRay(player: Player, params)
 		dir = dir.Unit * maxDist
 	end
 
-	-- Distance sanity check for ray origin
 	local attackerPos = self:_getAttackerPosition(player)
 	if attackerPos then
-		-- Ray origin should be reasonably close to attacker (e.g., within 20 studs for camera offset)
 		if not self:_checkDistanceSanity(attackerPos, origin, 20, 5) then
 			self.stats:Inc("rejects", "out_of_range")
 			self:_emitDebug(player, { reason="out_of_range", serverNow=now, rewindTo=rewindTo, usedRewindMs=usedRewindMs })
@@ -779,13 +765,11 @@ function Server:ValidateRay(player: Player, params)
 	local bestChar: Model? = nil
 	local bestPoseParts = nil
 
-	-- Get scale multiplier for scaled avatar support
 	local scale = self:_getScaleMultiplier(weapon)
 
 	for character, ts in pairs(self.targets) do
 		local pose = Rewinder.Sample(ts.store, rewindTo)
 		if pose then
-			-- Apply scale for scaled avatar support
 			pose = self:_applyScaleToPose(pose, scale)
 
 			local r = Validator.RaycastPose(origin, dir, pose, {
