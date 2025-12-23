@@ -4,7 +4,7 @@ sidebar_position: 3
 
 # Installation
 
-## Using Wally (Recommended)
+## Using Wally
 
 Add Rewind to your `wally.toml`:
 
@@ -19,7 +19,7 @@ Then run:
 wally install
 ```
 
-## Or Install RBXM
+## Or Install RBXM (Recommended)
 
 1. Download the latest release: [RewindRelease.rbxm](https://github.com/text21/Rewind/raw/main/docs/RobloxBuilds/Rewindv1.2.0.rbxm)
 2. Insert the RBXM file into `ReplicatedStorage` in Roblox Studio
