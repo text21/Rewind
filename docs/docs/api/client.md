@@ -171,21 +171,19 @@ type ClientConfig = {
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 
-local Rewind = require(ReplicatedStorage.Rewind)
+local Rewind = require(ReplicatedStorage.Packages.Rewind)
 
--- Initialize
-Rewind.Client.Init({
-    debugMode = game:GetService("RunService"):IsStudio(),
-})
+-- Initialize clock sync
+Rewind.ClockSync.StartClient()
 
 -- Wait for ready
-Rewind.Client.WaitForReady()
+Rewind.ClockSync.WaitForSync()
 print("Rewind client ready!")
 
 -- Now safe to use timestamps
 UserInputService.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 then
-        local timestamp = Rewind.Client.GetTimestamp()
+        local timestamp = Rewind.ClockSync.GetTime()
         -- Send hit request with timestamp
     end
 end)

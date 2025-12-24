@@ -234,16 +234,16 @@ Config.SnapshotRate = 30
 Config.DebugMode = true
 
 -- Then initialize
-Rewind.Server.Init()
+Rewind.Start()
 ```
 
-Or pass config to `Init()`:
+Or pass config to `Start()`:
 
 ```lua
-Rewind.Server.Init({
-    maxRewindTime = 0.8,
-    snapshotRate = 30,
-    debugMode = true,
+Rewind.Start({
+    maxRewindMs = 800,
+    snapshotHz = 30,
+    debug = { enabled = true },
 })
 ```
 

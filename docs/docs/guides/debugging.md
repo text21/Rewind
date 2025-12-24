@@ -14,14 +14,13 @@ The built-in debug panel uses [Iris](https://github.com/SirMallard/Iris) for rea
 
 ```lua
 -- Server
-Rewind.Server.Init({
-    debugMode = true,
+Rewind.Start({
+    debug = { enabled = true },
 })
+Rewind.ClockSync.StartServer()
 
--- Client (shows debug panel)
-Rewind.Client.Init({
-    debugMode = true,
-})
+-- Client
+Rewind.ClockSync.StartClient()
 ```
 
 ### Panel Features
@@ -35,14 +34,7 @@ The debug panel shows:
 
 ### Toggle Keybind
 
-Press `F6` (configurable) to toggle the debug panel:
-
-```lua
-Rewind.Client.Init({
-    debugMode = true,
-    debugToggleKey = Enum.KeyCode.F6,
-})
-```
+Press `F6` to toggle the debug panel (when debug mode is enabled on server).
 
 ## Visual Debugging
 
@@ -110,9 +102,8 @@ end)
 Enable verbose logging:
 
 ```lua
-Rewind.Server.Init({
-    debugMode = true,
-    verboseLogging = true,
+Rewind.Start({
+    debug = { enabled = true },
 })
 ```
 
@@ -179,15 +170,7 @@ end
 
 ### Simulate Lag
 
-Test with artificial latency:
-
-```lua
--- Client-side lag simulation
-Rewind.Client.Init({
-    debugMode = true,
-    simulatedLag = 0.2, -- 200ms added latency
-})
-```
+Test with artificial latency using Roblox Studio's Network Simulator (View > Network Simulator) or by adding delays in your hit validation code.
 
 ### Force Rewind
 

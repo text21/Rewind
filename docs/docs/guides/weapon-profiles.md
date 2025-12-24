@@ -51,10 +51,13 @@ local WeaponProfiles = {
     },
 }
 
--- Initialize with profiles
-Rewind.Server.Init({
-    weaponProfiles = WeaponProfiles,
-})
+-- Register profiles
+for name, profile in WeaponProfiles do
+    Rewind.RegisterProfile(name, profile)
+end
+
+-- Then start Rewind
+Rewind.Start()
 ```
 
 ## Profile Properties
@@ -122,7 +125,7 @@ You can modify profiles at runtime:
 WeaponProfiles.Rifle.maxDistance = 600
 
 -- Apply to Rewind
-Rewind.Server.UpdateWeaponProfile("Rifle", WeaponProfiles.Rifle)
+Rewind.RegisterProfile("Rifle", WeaponProfiles.Rifle)
 ```
 
 ## Default Fallback
@@ -185,7 +188,9 @@ for name, weapon in Weapons do
     profiles[name] = weapon.profile
 end
 
-Rewind.Server.Init({
-    weaponProfiles = profiles,
-})
+for name, profile in profiles do
+    Rewind.RegisterProfile(name, profile)
+end
+
+Rewind.Start()
 ```

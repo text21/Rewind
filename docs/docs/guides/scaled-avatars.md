@@ -128,8 +128,8 @@ humanoid.HeadScale.Value = 3
 Check detected scale in the debug panel:
 
 ```lua
-Rewind.Server.Init({
-    debugMode = true,
+Rewind.Start({
+    debug = { enabled = true },
 })
 ```
 

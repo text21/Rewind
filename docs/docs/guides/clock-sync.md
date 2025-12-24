@@ -90,8 +90,8 @@ ClockSync.Resync()
 The server automatically responds to clock sync requests. No setup required!
 
 ```lua
--- Server handles this internally
-Rewind.Server.Init() -- ClockSync server starts automatically
+-- Start clock sync server
+Rewind.ClockSync.StartServer() -- Call this after Rewind.Start()
 ```
 
 ## Debugging
@@ -99,8 +99,8 @@ Rewind.Server.Init() -- ClockSync server starts automatically
 Enable debug mode to see sync progress:
 
 ```lua
-Rewind.Server.Init({
-    debugMode = true,
+Rewind.Start({
+    debug = { enabled = true },
 })
 ```
 

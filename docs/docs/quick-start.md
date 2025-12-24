@@ -18,14 +18,16 @@ local Players = game:GetService("Players")
 local Rewind = require(ReplicatedStorage.Rewind)
 
 -- Initialize with default config
-Rewind.Server.Init()
+Rewind.Start()
+Rewind.ClockSync.StartServer()
 
 -- Or with custom config
-Rewind.Server.Init({
-    maxRewindTime = 1.0,      -- Max rewind window (seconds)
-    snapshotRate = 20,        -- Snapshots per second
-    debugMode = false,        -- Enable debug logging
+Rewind.Start({
+    snapshotHz = 20,          -- Snapshots per second
+    windowMs = 1000,          -- Max rewind window (milliseconds)
+    maxRewindMs = 500,        -- Max rewind allowed
 })
+Rewind.ClockSync.StartServer()
 
 print("Rewind Server initialized!")
 ```
@@ -41,10 +43,10 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Rewind = require(ReplicatedStorage.Rewind)
 
 -- Initialize clock sync
-Rewind.Client.Init()
+Rewind.ClockSync.StartClient()
 
 -- Wait for clock to synchronize
-Rewind.ClockSync.OnLockAcquired:Wait()
+Rewind.ClockSync.WaitForSync()
 print("Clock synchronized!")
 ```
 

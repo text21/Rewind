@@ -56,10 +56,11 @@ In networked games, there's always latency between what a player sees and what's
 local Rewind = require(ReplicatedStorage.Rewind)
 
 -- Initialize the server
-Rewind.Server.Init({
-    maxRewindTime = 1.0,
-    snapshotRate = 20,
+Rewind.Start({
+    snapshotHz = 20,
+    windowMs = 1000,
 })
+Rewind.ClockSync.StartServer()
 
 -- Validate a raycast hit
 local result = Rewind.Validate(player, "Raycast", {

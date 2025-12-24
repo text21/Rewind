@@ -30,8 +30,8 @@ Validates that the claimed origin is reasonable:
 -- Server checks:
 -- distance(claimedOrigin, actualPosition) < maxAllowedDrift
 
-Rewind.Server.Init({
-    maxOriginDrift = 10, -- studs
+Rewind.Start({
+    maxRayDistance = 1000,
 })
 ```
 
@@ -47,8 +47,8 @@ Ensures timestamps are within acceptable bounds:
 -- 2. Timestamp is not too far in the past
 -- 3. Timestamp is within rewind window
 
-Rewind.Server.Init({
-    maxRewindTime = 1.0, -- Maximum 1 second rewind
+Rewind.Start({
+    maxRewindMs = 1000, -- Maximum 1 second rewind
 })
 ```
 
