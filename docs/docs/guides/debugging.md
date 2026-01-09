@@ -76,25 +76,18 @@ Draw.Cone(origin, lookVector, angle, range, Color3.new(1, 0.5, 0), 0.5)
 
 ## Debug Events
 
-Subscribe to debug events for custom visualization:
+Enable debug mode to see validation details in the output:
 
 ```lua
--- Server-side
-Rewind.Server.OnValidation:Connect(function(result)
-    if result.accepted then
-        print("✓ Hit accepted:", result.victims)
-    else
-        print("✗ Hit rejected:", result.reason)
-    end
-end)
+-- Server-side with debug enabled
+Rewind.Start({
+    debug = { enabled = true },
+})
 
--- Log all validation details
-Rewind.Server.OnValidationDebug:Connect(function(debugInfo)
-    print("Timestamp:", debugInfo.timestamp)
-    print("Rewind delta:", debugInfo.rewindDelta)
-    print("Snapshot age:", debugInfo.snapshotAge)
-    print("Targets checked:", debugInfo.targetsChecked)
-end)
+-- Validation results will be logged automatically
+-- Example output:
+-- [Rewind] Hit accepted: Head, position: (10, 5, 3)
+-- [Rewind] Hit rejected: out_of_range
 ```
 
 ## Console Logging
@@ -111,35 +104,23 @@ Output:
 
 ```
 [Rewind] Validation request from Player1
-[Rewind]   Mode: Raycast
+[Rewind]   Mode: Ray
 [Rewind]   Timestamp: 1234567.89
 [Rewind]   Rewind delta: 0.15s
-[Rewind]   Checking 1 targets
+[Rewind]   Checking targets
 [Rewind]   Target Player2: HIT (Head)
-[Rewind] Result: Accepted, 1 victim(s)
+[Rewind] Result: Hit accepted
 ```
 
 ## Performance Profiling
 
-Track validation performance:
-
-```lua
-local Stats = Rewind.Server.Stats
-
--- Get current stats
-print("Validations/sec:", Stats.GetValidationsPerSecond())
-print("Avg validation time:", Stats.GetAverageValidationTime())
-print("Snapshot memory:", Stats.GetSnapshotMemory())
-
--- Reset stats
-Stats.Reset()
-```
+Rewind includes internal performance tracking. Check memory and validation performance in the debug panel when enabled.
 
 ## Common Issues
 
 ### Hitboxes Not Showing
 
-1. Ensure `debugMode = true` on both client and server
+1. Ensure `debug.enabled = true` in config
 2. Check that Iris is installed: `Packages/_Index/sirmallard_iris`
 3. Verify the debug panel is toggled on (F6)
 
@@ -159,10 +140,9 @@ print("RTT:", ClockSync.GetRTT())
 Enable debug to see rejection reasons:
 
 ```lua
-local result = Rewind.Validate(player, "Raycast", params)
-if not result.accepted then
+local result = Rewind.Validate(player, "Ray", params)
+if not result.hit then
     warn("Rejected:", result.reason)
-    warn("Debug info:", result.debugInfo)
 end
 ```
 
@@ -172,18 +152,9 @@ end
 
 Test with artificial latency using Roblox Studio's Network Simulator (View > Network Simulator) or by adding delays in your hit validation code.
 
-### Force Rewind
-
-Test specific rewind scenarios:
-
-```lua
--- Server-side: Force validate at specific time
-local result = Rewind.Server.ValidateAtTime(timestamp, params)
-```
-
 ## Best Practices
 
-1. **Disable in production** - Set `debugMode = false` for release
+1. **Disable in production** - Set `debug.enabled = false` for release
 2. **Use sparingly** - Debug visualization impacts performance
 3. **Log suspicious patterns** - Track rejection reasons
 4. **Test with lag** - Simulate high ping to verify compensation

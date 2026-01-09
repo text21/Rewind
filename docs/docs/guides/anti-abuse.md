@@ -75,37 +75,39 @@ end
 When a hit is rejected, you get a specific reason:
 
 ```lua
-local result = Rewind.Validate(player, "Raycast", params)
+local result = Rewind.Validate(player, "Ray", params)
 
-if not result.accepted then
+if not result.hit then
     print("Rejected:", result.reason)
     -- Possible reasons:
-    -- "NoSnapshot" - No snapshot data for timestamp
-    -- "TooFarBack" - Timestamp too old
-    -- "FutureTimestamp" - Timestamp in the future
-    -- "InvalidOrigin" - Origin position suspicious
-    -- "Duplicate" - Already processed this hit
-    -- "OutOfRange" - Target too far away
-    -- "NoLineOfSight" - Target not visible
-    -- "InvalidTarget" - Target doesn't exist
+    -- "rate_limited" - Player firing too fast
+    -- "duplicate_shot" - Already processed this shotId
+    -- "no_hit" - No target was hit
+    -- "no_humanoid" - Hit target has no humanoid
+    -- "friendly_fire" - Target is on same team
+    -- "not_server" - Called from client
+    -- "out_of_range" - Target beyond weapon range
+    -- "invalid_params" - Invalid validation parameters
+    -- "vehicle_blocked" - Vehicle absorbed the hit
+    -- "armor_absorbed" - Armor fully absorbed damage
 end
 ```
 
 ### RejectReason Enum
 
 ```lua
-local Types = Rewind.Types
-
-Types.RejectReason = {
-    NoSnapshot = "NoSnapshot",
-    TooFarBack = "TooFarBack",
-    FutureTimestamp = "FutureTimestamp",
-    InvalidOrigin = "InvalidOrigin",
-    Duplicate = "Duplicate",
-    OutOfRange = "OutOfRange",
-    NoLineOfSight = "NoLineOfSight",
-    InvalidTarget = "InvalidTarget",
-}
+type RejectReason =
+    | "rate_limited"
+    | "duplicate_shot"
+    | "no_hit"
+    | "no_humanoid"
+    | "friendly_fire"
+    | "not_server"
+    | "out_of_range"
+    | "invalid_params"
+    | "vehicle_blocked"
+    | "armor_absorbed"
+    | nil  -- nil = success/hit
 ```
 
 ## Custom Validation
@@ -141,7 +143,7 @@ HitRemote.OnServerEvent:Connect(function(player, hitData)
     end
 
     -- Continue with Rewind validation
-    local result = Rewind.Validate(player, "Raycast", hitData)
+    local result = Rewind.Validate(player, "Ray", hitData)
     -- ...
 end)
 ```
@@ -170,10 +172,10 @@ local function trackSuspicious(player, reason)
 end
 
 -- In validation
-local result = Rewind.Validate(player, "Raycast", params)
-if not result.accepted then
-    if result.reason == "InvalidOrigin" or
-       result.reason == "FutureTimestamp" then
+local result = Rewind.Validate(player, "Ray", params)
+if not result.hit then
+    if result.reason == "out_of_range" or
+       result.reason == "rate_limited" then
         trackSuspicious(player, result.reason)
     end
 end

@@ -137,16 +137,15 @@ function CodeExample() {
 local Rewind = require(ReplicatedStorage.Rewind)
 
 -- Validate a raycast hit
-local result = Rewind.Validate(player, "Raycast", {
+local result = Rewind.Validate(player, "Ray", {
     origin = origin,
     direction = direction,
-    targetIds = { targetPlayer.UserId },
+    clientTime = timestamp,
     weaponId = "Rifle",
-    timestamp = timestamp,
 })
 
-if result.accepted then
-    -- Apply damage to result.victims
+if result.hit then
+    result.humanoid:TakeDamage(25)
 end`}
             </pre>
           </div>

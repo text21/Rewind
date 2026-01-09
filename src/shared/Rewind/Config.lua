@@ -2,7 +2,7 @@
 local Config = {}
 
 -- Version info
-Config.Version = "1.2.0"
+Config.Version = "1.2.1"
 Config.VersionName = "Anti-Cheat & Vehicles"
 
 Config.Defaults = {

@@ -80,6 +80,37 @@ function ClockSync.HasLock(): boolean
 end
 
 --[[
+	Wait for the clock to synchronize (blocking).
+	Use this to ensure timestamps are accurate before sending hits.
+	@param timeout Optional timeout in seconds (default 10)
+	@return true if synced, false if timed out
+]]
+function ClockSync.WaitForSync(timeout: number?): boolean
+	if RunService:IsServer() then return true end
+
+	timeout = timeout or 10
+	local startTime = os.clock()
+
+	while not ClockSync.HasLock() do
+		if os.clock() - startTime > timeout then
+			warn("[ClockSync] WaitForSync timed out after", timeout, "seconds")
+			return false
+		end
+		task.wait(0.1)
+	end
+
+	return true
+end
+
+--[[
+	Alias for ClientNow() - get the estimated server time.
+	@return Estimated server time
+]]
+function ClockSync.GetTime(): number
+	return ClockSync.ClientNow()
+end
+
+--[[
 	Get the current clock offset (client to server).
 	Safe to call anytime - returns 0 if not initialized.
 	@return Offset in seconds

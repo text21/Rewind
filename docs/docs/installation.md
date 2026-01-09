@@ -10,7 +10,7 @@ Add Rewind to your `wally.toml`:
 
 ```toml
 [dependencies]
-Rewind = "text21/rewind@1.2.0"
+Rewind = "text21/rewind@1.2.1"
 ```
 
 Then run:
@@ -21,7 +21,7 @@ wally install
 
 ## Or Install RBXM (Recommended)
 
-1. Download the latest release: [RewindRelease.rbxm](https://github.com/text21/Rewind/raw/main/docs/RobloxBuilds/Rewindv1.2.0.rbxm)
+1. Download the latest release: [Rewindv1.2.1.rbxm](https://github.com/text21/Rewind/raw/main/docs/RobloxBuilds/Rewindv1.2.1.rbxm)
 2. Insert the RBXM file into `ReplicatedStorage` in Roblox Studio
 3. Done! The module is ready to use
 
@@ -87,8 +87,7 @@ Test that Rewind is installed correctly:
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Rewind = require(ReplicatedStorage.Rewind)
 
-print("Rewind version:", Rewind.Version) -- Should print version
-print("Server module:", Rewind.Server) -- Should print table
+print("Rewind version:", Rewind.Version) -- Should print "1.2.0"
 ```
 
 ## Next Steps

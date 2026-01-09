@@ -6,6 +6,21 @@ title: Changelog
 
 All notable changes to Rewind are documented here.
 
+## [1.2.1] - Documentation & API Fixes 📚
+
+### Fixes
+
+- Fixed `ClockSync.WaitForSync()` - now properly implemented
+- Added `ClockSync.GetTime()` alias for `ClientNow()`
+- Fixed documentation to use correct `ValidationMode` values (`"Ray"`, `"Sphere"`, `"Capsule"`, `"Cone"`, `"Fan"`)
+- Fixed all documentation examples to use `result.hit` instead of `result.accepted`
+- Fixed documentation to use `clientTime` instead of `timestamp` in params
+- Removed non-existent `Rewind.Server` module references from docs
+- Updated `RejectReason` enum values in documentation
+- Complete documentation audit for accuracy
+
+---
+
 ## [1.0.0] - 2025-18-12
 
 ### 🎉 Initial Release
@@ -22,10 +37,10 @@ First public release of Rewind - a server-authoritative lag compensation framewo
 
 #### Validation Modes
 
-- **Raycast** - Instant hitscan validation
-- **Projectile** - Travel-time projectile validation
+- **Ray** - Instant hitscan validation
+- **Sphere** - Area of effect / explosion validation
 - **Capsule** - Thick bullet sweep validation
-- **Melee** - Cone-based melee attack validation
+- **Cone / Fan** - Melee attack validation
 
 #### Rig Support
 

@@ -62,12 +62,11 @@ local WeaponProfiles = {
 When validating hits, scale is automatically applied:
 
 ```lua
-local result = Rewind.Validate(player, "Raycast", {
+local result = Rewind.Validate(player, "Ray", {
     origin = origin,
     direction = direction,
-    targetIds = { targetId },
+    clientTime = timestamp,
     weaponId = "Rifle",
-    timestamp = timestamp,
 })
 -- Hitboxes are automatically scaled based on target character scale
 -- and weapon profile's scaleMultiplier

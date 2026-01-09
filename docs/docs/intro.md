@@ -29,7 +29,7 @@ In networked games, there's always latency between what a player sees and what's
 
 - 🛡️ **Server-Authoritative** - All validation on server, never trust the client
 - ⏰ **Clock Synchronization** - Accurate time reconciliation between client and server
-- 🎯 **Multi-Mode Validation** - Raycast, projectile, capsule, and melee support
+- 🎯 **Multi-Mode Validation** - Ray, sphere, capsule, and melee support
 - 🤖 **Automatic Rig Detection** - Built-in R6 and R15 hitbox profiles
 - 📏 **Scaled Avatar Support** - Proper hitbox scaling for custom character sizes
 - 🔧 **Debug Tools** - Real-time visualization with Iris debug panel
@@ -63,17 +63,16 @@ Rewind.Start({
 Rewind.ClockSync.StartServer()
 
 -- Validate a raycast hit
-local result = Rewind.Validate(player, "Raycast", {
+local result = Rewind.Validate(player, "Ray", {
     origin = origin,
     direction = direction,
-    targetIds = { targetPlayer.UserId },
+    clientTime = timestamp,
     weaponId = "Rifle",
-    timestamp = timestamp,
 })
 
-if result.accepted then
-    for _, victim in result.victims do
-        victim.character:FindFirstChild("Humanoid"):TakeDamage(25)
+if result.hit then
+    if result.humanoid then
+        result.humanoid:TakeDamage(25)
     end
 end
 ```

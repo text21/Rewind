@@ -211,18 +211,22 @@ Profiles are automatically used during validation:
 
 ```lua
 -- Validation automatically uses appropriate profile
-local result = Rewind.Validate(player, "Raycast", params)
+local result = Rewind.Validate(player, "Ray", params)
 
 -- Result includes hit part info
-if result.accepted then
-    for _, victim in result.victims do
-        print("Hit part:", victim.hitPart)
+if result.hit then
+    print("Hit part:", result.partName)
 
-        -- Get damage multiplier from profile
-        local profile = RigAdapter.GetProfile(victim.character)
-        local hitbox = profile[victim.hitPart]
-        local damage = baseDamage * (hitbox.damageMultiplier or 1.0)
+    -- Get damage multiplier based on part hit
+    local baseDamage = 25
+    local multiplier = 1.0
+    
+    if result.partName == "Head" then
+        multiplier = 2.0
     end
+    
+    local finalDamage = baseDamage * multiplier
+    result.humanoid:TakeDamage(finalDamage)
 end
 ```
 

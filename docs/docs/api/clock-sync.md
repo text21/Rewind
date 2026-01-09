@@ -7,12 +7,98 @@ sidebar_position: 8
 Clock synchronization module for accurate time reconciliation between client and server.
 
 ```lua
-local ClockSync = require(ReplicatedStorage.Rewind.ClockSync)
--- or
 local ClockSync = Rewind.ClockSync
 ```
 
+## Server Functions
+
+### StartServer
+
+```lua
+ClockSync.StartServer(): ()
+```
+
+Start the clock sync server. Call this once on server startup.
+
+**Example:**
+
+```lua
+-- Server
+Rewind.ClockSync.StartServer()
+```
+
+---
+
 ## Client Functions
+
+### StartClient
+
+```lua
+ClockSync.StartClient(opts: ClockSyncOptions?): ()
+```
+
+Start the clock sync client. Call this once on client startup.
+
+**Parameters:**
+
+- `opts` - Optional configuration
+
+**Options:**
+
+```lua
+type ClockSyncOptions = {
+    syncInterval: number?,    -- Resync interval in seconds (default 2.0)
+    burstSamples: number?,    -- Samples per burst (default 5)
+    alpha: number?,           -- EMA smoothing factor (default 0.12)
+    useBestRtt: boolean?,     -- Use best RTT sample (default true)
+    minGoodSamples: number?,  -- Min samples before lock (default 2)
+}
+```
+
+**Example:**
+
+```lua
+-- Client
+Rewind.ClockSync.StartClient()
+
+-- With custom options
+Rewind.ClockSync.StartClient({
+    syncInterval = 5.0,
+    burstSamples = 8,
+})
+```
+
+---
+
+### WaitForSync
+
+```lua
+ClockSync.WaitForSync(timeout: number?): boolean
+```
+
+Wait for the clock to synchronize (blocking).
+
+**Parameters:**
+
+- `timeout` - Optional timeout in seconds (default 10)
+
+**Returns:** `true` if synced, `false` if timed out.
+
+**Example:**
+
+```lua
+local synced = Rewind.ClockSync.WaitForSync()
+if synced then
+    print("Clock synchronized!")
+else
+    warn("Clock sync timed out")
+end
+
+-- With custom timeout
+Rewind.ClockSync.WaitForSync(5) -- 5 second timeout
+```
+
+---
 
 ### ClientNow
 
@@ -20,16 +106,34 @@ local ClockSync = Rewind.ClockSync
 ClockSync.ClientNow(): number
 ```
 
-Get the current synchronized time.
+Get the current synchronized server time from the client.
 
-**Returns:** Server-synchronized time in seconds.
+**Returns:** Estimated server time in seconds.
 
 **Safe Default:** Returns `os.clock()` if clock hasn't synchronized yet.
 
 **Example:**
 
 ```lua
-local timestamp = ClockSync.ClientNow()
+local timestamp = Rewind.ClockSync.ClientNow()
+```
+
+---
+
+### GetTime
+
+```lua
+ClockSync.GetTime(): number
+```
+
+Alias for `ClientNow()`. Get the current synchronized time.
+
+**Returns:** Estimated server time in seconds.
+
+**Example:**
+
+```lua
+local timestamp = Rewind.ClockSync.GetTime()
 ```
 
 ---
@@ -42,14 +146,14 @@ ClockSync.GetOffset(): number
 
 Get the calculated time offset between client and server.
 
-**Returns:** Offset in seconds (serverTime - clientTime).
+**Returns:** Offset in seconds.
 
 **Safe Default:** Returns `0` before lock is acquired.
 
 **Example:**
 
 ```lua
-local offset = ClockSync.GetOffset()
+local offset = Rewind.ClockSync.GetOffset()
 print("Time offset:", offset, "seconds")
 ```
 
@@ -70,7 +174,7 @@ Get the measured round-trip time.
 **Example:**
 
 ```lua
-local rtt = ClockSync.GetRTT()
+local rtt = Rewind.ClockSync.GetRTT()
 print("Ping:", rtt * 1000, "ms")
 ```
 
@@ -89,7 +193,7 @@ Check if the clock has synchronized.
 **Example:**
 
 ```lua
-if ClockSync.HasLock() then
+if Rewind.ClockSync.HasLock() then
     print("Clock is synchronized!")
 else
     print("Still synchronizing...")
@@ -98,98 +202,18 @@ end
 
 ---
 
-### Resync
+### Stop
 
 ```lua
-ClockSync.Resync(): ()
+ClockSync.Stop(): ()
 ```
 
-Force a resynchronization of the clock.
+Stop the clock sync (client or server).
 
 **Example:**
 
 ```lua
--- After network issues
-ClockSync.Resync()
-```
-
----
-
-## Client Events
-
-### OnLockAcquired
-
-```lua
-ClockSync.OnLockAcquired: Signal<>
-```
-
-Fired when the clock first synchronizes.
-
-**Example:**
-
-```lua
-ClockSync.OnLockAcquired:Connect(function()
-    print("Clock synchronized!")
-end)
-
--- Or wait for it
-ClockSync.OnLockAcquired:Wait()
-```
-
----
-
-### OnResync
-
-```lua
-ClockSync.OnResync: Signal<number>
-```
-
-Fired after each resync with the new offset.
-
-**Example:**
-
-```lua
-ClockSync.OnResync:Connect(function(newOffset)
-    print("Resynced, new offset:", newOffset)
-end)
-```
-
----
-
-## Server Functions
-
-### ServerNow
-
-```lua
-ClockSync.ServerNow(): number
-```
-
-Get the current server time. Used internally for timestamps.
-
-**Returns:** Current server time in seconds.
-
----
-
-### Init
-
-```lua
-ClockSync.Init(): ()
-```
-
-Initialize the server-side clock sync responder. Called automatically by `Server.Init()`.
-
----
-
-## Configuration
-
-Configure in `Config.ClockSync`:
-
-```lua
-Config.ClockSync = {
-    SampleCount = 8,      -- Samples before lock
-    SyncInterval = 5.0,   -- Resync interval (seconds)
-    Timeout = 2.0,        -- Ping timeout (seconds)
-}
+Rewind.ClockSync.Stop()
 ```
 
 ---
@@ -198,23 +222,21 @@ Config.ClockSync = {
 
 ### Algorithm
 
-1. Client sends ping with local timestamp `t1`
-2. Server responds with server time `t2`
+1. Client sends ping with local timestamp `t0`
+2. Server records receive time `t1` and send time `t2`
 3. Client records receive time `t3`
-4. RTT = `t3 - t1`
-5. Offset = `t2 - t1 - RTT/2`
+4. RTT = `(t3 - t0) - (t2 - t1)`
+5. Offset = `t1 - midpoint(t0, t3)`
 
-### Median Filter
+### Exponential Moving Average
 
-Multiple samples are collected and the median offset is used to filter out outliers caused by network jitter.
+Samples are smoothed using EMA to handle network jitter:
 
+```lua
+offset = offset + (newSample - offset) * alpha
 ```
-Samples: [0.021, 0.023, 0.150, 0.022, 0.024, 0.021, 0.023, 0.022]
-                          ^^^
-                      outlier (lag spike)
 
-Median: 0.022 (accurate offset)
-```
+The default alpha of 0.12 provides good smoothing while still responding to changes.
 
 ---
 
@@ -225,6 +247,7 @@ All functions have safe fallbacks before synchronization:
 | Function      | Before Lock  | After Lock        |
 | ------------- | ------------ | ----------------- |
 | `ClientNow()` | `os.clock()` | Synchronized time |
+| `GetTime()`   | `os.clock()` | Synchronized time |
 | `GetOffset()` | `0`          | Calculated offset |
 | `GetRTT()`    | `0`          | Measured RTT      |
 | `HasLock()`   | `false`      | `true`            |
@@ -235,50 +258,54 @@ This ensures your code won't error if called before sync completes.
 
 ## Usage Patterns
 
-### Pattern 1: Wait for Lock
+### Pattern 1: Wait for Sync (Recommended)
 
 ```lua
--- Block until ready
-ClockSync.OnLockAcquired:Wait()
-local timestamp = ClockSync.ClientNow()
+Rewind.ClockSync.StartClient()
+Rewind.ClockSync.WaitForSync()
+local timestamp = Rewind.ClockSync.GetTime()
 ```
 
 ### Pattern 2: Check Before Use
 
 ```lua
-if ClockSync.HasLock() then
-    local timestamp = ClockSync.ClientNow()
+if Rewind.ClockSync.HasLock() then
+    local timestamp = Rewind.ClockSync.GetTime()
     -- Use timestamp
 end
 ```
 
-### Pattern 3: Event-Driven
+### Pattern 3: Non-Blocking Start
 
 ```lua
-ClockSync.OnLockAcquired:Connect(function()
-    enableWeaponFiring()
-end)
+Rewind.ClockSync.StartClient()
+-- Clock will sync in background
+-- ClientNow() returns os.clock() until lock acquired
 ```
 
 ---
 
-## Debugging
-
-Enable debug mode to see sync progress:
+## Complete Example
 
 ```lua
--- In console:
--- [Rewind] ClockSync: Sample 1/8, offset = 0.023s
--- [Rewind] ClockSync: Sample 2/8, offset = 0.021s
--- ...
--- [Rewind] ClockSync: Lock acquired, offset = 0.022s, RTT = 0.045s
+-- Server
+local Rewind = require(ReplicatedStorage.Packages.Rewind)
+Rewind.Start()
+Rewind.ClockSync.StartServer()
 ```
 
-Check current state:
-
 ```lua
-print("Has lock:", ClockSync.HasLock())
-print("Offset:", ClockSync.GetOffset())
-print("RTT:", ClockSync.GetRTT())
-print("Current time:", ClockSync.ClientNow())
+-- Client
+local Rewind = require(ReplicatedStorage.Packages.Rewind)
+Rewind.ClockSync.StartClient()
+Rewind.ClockSync.WaitForSync()
+
+print("Synced! Offset:", Rewind.ClockSync.GetOffset())
+print("RTT:", Rewind.ClockSync.GetRTT() * 1000, "ms")
+
+-- Now safe to send timestamps
+local function onShoot()
+    local timestamp = Rewind.ClockSync.GetTime()
+    HitRemote:FireServer({ timestamp = timestamp, ... })
+end
 ```

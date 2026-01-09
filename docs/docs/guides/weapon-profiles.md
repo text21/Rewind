@@ -91,12 +91,11 @@ Rewind.Start()
 When validating a hit, specify the weapon ID:
 
 ```lua
-local result = Rewind.Validate(player, "Raycast", {
+local result = Rewind.Validate(player, "Ray", {
     origin = origin,
     direction = direction,
-    targetIds = { targetId },
+    clientTime = timestamp,
     weaponId = "Rifle",  -- Uses Rifle profile
-    timestamp = timestamp,
 })
 ```
 
@@ -109,11 +108,10 @@ local profile = WeaponProfiles.Rifle
 local params = Rewind.CreateParamsFromWeapon(profile, {
     origin = origin,
     direction = direction,
-    targetIds = targetIds,
-    timestamp = timestamp,
+    clientTime = timestamp,
 })
 
-local result = Rewind.Validate(player, "Raycast", params)
+local result = Rewind.Validate(player, "Ray", params)
 ```
 
 ## Dynamic Profiles

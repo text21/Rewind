@@ -4,281 +4,218 @@ sidebar_position: 3
 
 # Config
 
-Configuration values for Rewind. Modify these before calling `Init()`.
+Configuration module containing version information and default settings.
 
 ```lua
-local Config = require(ReplicatedStorage.Rewind.Config)
--- or
 local Config = Rewind.Config
 ```
 
-## Server Configuration
+## Version Properties
 
-### MaxRewindTime
+### Version
 
 ```lua
-Config.MaxRewindTime: number = 1.0
+Config.Version: string -- "1.2.0"
 ```
 
-Maximum time in seconds that the server can rewind. Attacks with timestamps older than this are rejected.
+The current semantic version string.
 
 ---
 
-### SnapshotRate
+### VersionName
 
 ```lua
-Config.SnapshotRate: number = 20
+Config.VersionName: string -- "Anti-Cheat & Vehicles"
 ```
 
-How many snapshots per second to capture. Higher values = more accurate but more memory.
+Human-readable name for the current version.
 
 ---
 
-### MaxSnapshots
+## Default Configuration
+
+All options can be passed to `Rewind.Start()` to override these defaults.
+
+### Config.Defaults
 
 ```lua
-Config.MaxSnapshots: number = 30
+Config.Defaults = {
+    enabled = true,             -- Enable hit validation
+    
+    snapshotHz = 30,            -- Snapshots captured per second
+    windowMs = 750,             -- Total snapshot window (milliseconds)
+    maxRewindMs = 500,          -- Maximum rewind allowed (milliseconds)
+    
+    maxRayDistance = 1000,      -- Maximum ray/weapon range (studs)
+    allowHeadshots = true,      -- Enable headshot detection
+    
+    teamCheck = true,           -- Check team before allowing hits
+    friendlyFire = false,       -- Allow damage to teammates
+    
+    antiSpam = {
+        perSecond = 30,         -- Max shots per second
+        burst = 60,             -- Burst allowance
+    },
+    
+    mode = "Analytic",          -- "Analytic" | "GhostParts"
+    
+    debug = {
+        enabled = false,        -- Enable debug visualization
+    },
+}
 ```
-
-Maximum number of snapshots to store in the ring buffer. Calculated as `MaxRewindTime * SnapshotRate * 1.5`.
 
 ---
 
-### MaxOriginDrift
+## Options Reference
+
+### enabled
 
 ```lua
-Config.MaxOriginDrift: number = 10
+enabled: boolean = true
 ```
 
-Maximum allowed distance between claimed origin and actual player position. Used for anti-abuse.
+Master toggle for hit validation. Set to `false` to bypass all validation.
 
 ---
 
-### DebugMode
+### snapshotHz
 
 ```lua
-Config.DebugMode: boolean = false
+snapshotHz: number = 30
 ```
 
-Enable debug logging and visualization.
+How many character snapshots to capture per second. Higher values mean more accurate rewinding at the cost of memory.
+
+**Recommended:** 20-30 for most games.
 
 ---
 
-### VerboseLogging
+### windowMs
 
 ```lua
-Config.VerboseLogging: boolean = false
+windowMs: number = 750
 ```
 
-Enable detailed console logging for every validation.
+Total duration of snapshots to keep in memory (milliseconds). Older snapshots are discarded.
 
 ---
 
-## Clock Sync Configuration
-
-### ClockSync.SampleCount
+### maxRewindMs
 
 ```lua
-Config.ClockSync.SampleCount: number = 8
+maxRewindMs: number = 500
 ```
 
-Number of ping samples to collect before calculating offset.
+Maximum time the server will rewind to validate a hit (milliseconds). Hits claiming older timestamps are rejected.
+
+**Note:** This should be less than or equal to `windowMs`.
 
 ---
 
-### ClockSync.SyncInterval
+### maxRayDistance
 
 ```lua
-Config.ClockSync.SyncInterval: number = 5.0
+maxRayDistance: number = 1000
 ```
 
-Seconds between periodic resyncs after initial lock.
+Default maximum distance for ray-based validation. Individual weapons can override this via `WeaponProfile`.
 
 ---
 
-### ClockSync.Timeout
+### allowHeadshots
 
 ```lua
-Config.ClockSync.Timeout: number = 2.0
+allowHeadshots: boolean = true
 ```
 
-Timeout in seconds for individual ping requests.
+Enable headshot detection and `isHeadshot` in `HitResult`.
 
 ---
 
-## Validation Configuration
-
-### Validation.DefaultTolerance
+### teamCheck
 
 ```lua
-Config.Validation.DefaultTolerance: number = 0.1
+teamCheck: boolean = true
 ```
 
-Default hit tolerance in seconds for timestamp matching.
+Check if attacker and victim are on different teams before accepting hits.
 
 ---
 
-### Validation.DefaultMaxDistance
+### friendlyFire
 
 ```lua
-Config.Validation.DefaultMaxDistance: number = 1000
+friendlyFire: boolean = false
 ```
 
-Default maximum weapon range in studs.
+Allow hits on teammates. If `true`, team checks are ignored.
 
 ---
 
-### Validation.CapsuleRadius
+### antiSpam
 
 ```lua
-Config.Validation.CapsuleRadius: number = 0.3
+antiSpam: {
+    perSecond: number,
+    burst: number,
+}
 ```
 
-Default capsule sweep radius for ranged weapons.
+Rate limiting for validation requests.
+
+- `perSecond` - Maximum sustained shots per second
+- `burst` - Maximum burst allowance
 
 ---
 
-### Validation.CapsuleSteps
+### mode
 
 ```lua
-Config.Validation.CapsuleSteps: number = 10
+mode: "Analytic" | "GhostParts" = "Analytic"
 ```
 
-Default interpolation steps for capsule sweeps.
+Validation mode:
+
+- `Analytic` - Uses mathematical intersection testing (faster, recommended)
+- `GhostParts` - Creates temporary parts for Roblox raycasting (slower, more accurate edge cases)
 
 ---
 
-### Validation.MeleeRange
+### debug
 
 ```lua
-Config.Validation.MeleeRange: number = 5
+debug: {
+    enabled: boolean,
+}
 ```
 
-Default melee attack range.
+Debug settings. Enable to see hitbox visualizations and logging.
 
 ---
 
-### Validation.MeleeAngle
+## Usage Example
 
-```lua
-Config.Validation.MeleeAngle: number = 90
-```
-
-Default melee cone angle in degrees.
-
----
-
-### Validation.MeleeRays
-
-```lua
-Config.Validation.MeleeRays: number = 5
-```
-
-Default number of rays for melee cone checks.
-
----
-
-## Debug Configuration
-
-### Debug.ToggleKey
-
-```lua
-Config.Debug.ToggleKey: Enum.KeyCode = Enum.KeyCode.F6
-```
-
-Key to toggle the debug panel.
-
----
-
-### Debug.DrawDuration
-
-```lua
-Config.Debug.DrawDuration: number = 1.0
-```
-
-Default duration for debug visualizations.
-
----
-
-### Debug.HitboxColor
-
-```lua
-Config.Debug.HitboxColor: Color3 = Color3.new(0, 1, 0)
-```
-
-Default color for hitbox visualization.
-
----
-
-### Debug.RayColor
-
-```lua
-Config.Debug.RayColor: Color3 = Color3.new(1, 1, 0)
-```
-
-Default color for ray visualization.
-
----
-
-## Modifying Config
-
-Modify config values before initialization:
-
-```lua
-local Rewind = require(ReplicatedStorage.Rewind)
-local Config = Rewind.Config
-
--- Modify values
-Config.MaxRewindTime = 0.8
-Config.SnapshotRate = 30
-Config.DebugMode = true
-
--- Then initialize
-Rewind.Start()
-```
-
-Or pass config to `Start()`:
+Pass options to `Rewind.Start()`:
 
 ```lua
 Rewind.Start({
-    maxRewindMs = 800,
-    snapshotHz = 30,
-    debug = { enabled = true },
+    snapshotHz = 20,
+    windowMs = 1000,
+    maxRewindMs = 300,
+    maxRayDistance = 500,
+    friendlyFire = false,
+    teamCheck = true,
+    debug = {
+        enabled = true,
+    },
 })
 ```
 
-## Full Default Config
+Or modify at runtime with `Rewind.Configure()`:
 
 ```lua
-local DefaultConfig = {
-    MaxRewindTime = 1.0,
-    SnapshotRate = 20,
-    MaxSnapshots = 30,
-    MaxOriginDrift = 10,
-    DebugMode = false,
-    VerboseLogging = false,
-
-    ClockSync = {
-        SampleCount = 8,
-        SyncInterval = 5.0,
-        Timeout = 2.0,
-    },
-
-    Validation = {
-        DefaultTolerance = 0.1,
-        DefaultMaxDistance = 1000,
-        CapsuleRadius = 0.3,
-        CapsuleSteps = 10,
-        MeleeRange = 5,
-        MeleeAngle = 90,
-        MeleeRays = 5,
-    },
-
-    Debug = {
-        ToggleKey = Enum.KeyCode.F6,
-        DrawDuration = 1.0,
-        HitboxColor = Color3.new(0, 1, 0),
-        RayColor = Color3.new(1, 1, 0),
-    },
-}
+Rewind.Configure({
+    debug = { enabled = false },
+})
 ```

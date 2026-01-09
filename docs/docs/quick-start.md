@@ -63,21 +63,17 @@ local HitRemote = -- your hit remote
 
 HitRemote.OnServerEvent:Connect(function(player, hitData)
     -- Use the high-level Validate API
-    local result = Rewind.Validate(player, "Raycast", {
+    local result = Rewind.Validate(player, "Ray", {
         origin = hitData.origin,
         direction = hitData.direction,
-        targetIds = { hitData.targetUserId },
+        clientTime = hitData.timestamp,
         weaponId = "Rifle",
-        timestamp = hitData.timestamp,
     })
 
-    if result.accepted then
+    if result.hit then
         -- Hit was valid!
-        for _, victim in result.victims do
-            local humanoid = victim.character:FindFirstChild("Humanoid")
-            if humanoid then
-                humanoid:TakeDamage(25)
-            end
+        if result.humanoid then
+            result.humanoid:TakeDamage(25)
         end
     else
         -- Hit rejected
