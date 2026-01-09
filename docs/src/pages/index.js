@@ -36,7 +36,7 @@ function HeroBanner() {
           </Link>
         </div>
         <div className={styles.installCmd}>
-          <code>Rewind = "text21/rewind@1.2.0"</code>
+          <code>Rewind = "text21/rewind@1.2.1"</code>
         </div>
       </div>
     </header>

@@ -87,7 +87,7 @@ Test that Rewind is installed correctly:
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Rewind = require(ReplicatedStorage.Rewind)
 
-print("Rewind version:", Rewind.Version) -- Should print "1.2.0"
+print("Rewind version:", Rewind.Version) -- Should print "1.2.1"
 ```
 
 ## Next Steps

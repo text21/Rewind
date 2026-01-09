@@ -41,24 +41,24 @@ All options can be passed to `Rewind.Start()` to override these defaults.
 ```lua
 Config.Defaults = {
     enabled = true,             -- Enable hit validation
-    
+
     snapshotHz = 30,            -- Snapshots captured per second
     windowMs = 750,             -- Total snapshot window (milliseconds)
     maxRewindMs = 500,          -- Maximum rewind allowed (milliseconds)
-    
+
     maxRayDistance = 1000,      -- Maximum ray/weapon range (studs)
     allowHeadshots = true,      -- Enable headshot detection
-    
+
     teamCheck = true,           -- Check team before allowing hits
     friendlyFire = false,       -- Allow damage to teammates
-    
+
     antiSpam = {
         perSecond = 30,         -- Max shots per second
         burst = 60,             -- Burst allowance
     },
-    
+
     mode = "Analytic",          -- "Analytic" | "GhostParts"
-    
+
     debug = {
         enabled = false,        -- Enable debug visualization
     },

@@ -18,13 +18,13 @@ local Types = Rewind.Types
 type ValidationMode = "Ray" | "Sphere" | "Capsule" | "Cone" | "Fan"
 ```
 
-| Mode      | Description                                          |
-| --------- | ---------------------------------------------------- |
-| `Ray`     | Instant hitscan raycast validation                   |
-| `Sphere`  | Sphere overlap for explosions and AoE                |
-| `Capsule` | Capsule sweep for thick bullets or projectile paths  |
-| `Cone`    | Cone-based melee arc attack                          |
-| `Fan`     | Multi-ray fan for sweeping melee attacks             |
+| Mode      | Description                                         |
+| --------- | --------------------------------------------------- |
+| `Ray`     | Instant hitscan raycast validation                  |
+| `Sphere`  | Sphere overlap for explosions and AoE               |
+| `Capsule` | Capsule sweep for thick bullets or projectile paths |
+| `Cone`    | Cone-based melee arc attack                         |
+| `Fan`     | Multi-ray fan for sweeping melee attacks            |
 
 ---
 
@@ -139,11 +139,11 @@ type HitResult = {
     usedRewindMs: number,           -- Amount of rewind used
     isHeadshot: boolean?,           -- Was it a headshot
     reason: RejectReason,           -- Rejection reason (nil = success)
-    
+
     -- Vehicle hits
     vehicle: Model?,                -- Hit vehicle model
     vehicleInfo: VehicleInfo?,      -- Vehicle details
-    
+
     -- Armor
     armorResult: DamageResult?,     -- Armor calculation result
 }
@@ -161,17 +161,17 @@ type WeaponProfile = {
     maxRewindMs: number?,           -- Override max rewind
     maxDistance: number?,           -- Max effective range
     extraForgivenessStuds: number?, -- Extra hit tolerance
-    
+
     -- Melee weapons
     meleeRange: number?,
     meleeAngleDeg: number?,
     meleeRays: number?,
     isMelee: boolean?,
-    
+
     -- Capsule weapons
     capsuleRadius: number?,
     capsuleSteps: number?,
-    
+
     -- Other
     requireLineOfSight: boolean?,
     scaleMultiplier: number?,
@@ -275,20 +275,20 @@ type ValidateParams = {
     weaponId: string?,
     clientTime: number?,
     clientShotId: string?,
-    
+
     -- Ray
     origin: (Vector3 | CFrame)?,
     direction: Vector3?,
-    
+
     -- Sphere
     center: Vector3?,
     radius: number?,
-    
+
     -- Capsule
     a: Vector3?,
     b: Vector3?,
     steps: number?,
-    
+
     -- Cone/Fan
     range: number?,
     angleDeg: number?,
@@ -308,13 +308,13 @@ type ReplicationConfig = {
     tickRate: number?,              -- Updates per second
     interpolationDelay: number?,    -- Interpolation buffer (ms)
     maxExtrapolation: number?,      -- Max extrapolation (ms)
-    
+
     deltaCompression: boolean?,
     proximityBased: boolean?,
     nearDistance: number?,
     farDistance: number?,
     farTickDivisor: number?,
-    
+
     clientAuthoritative: boolean?,
     reconciliationThreshold: number?,
 }

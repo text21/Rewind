@@ -220,11 +220,11 @@ if result.hit then
     -- Get damage multiplier based on part hit
     local baseDamage = 25
     local multiplier = 1.0
-    
+
     if result.partName == "Head" then
         multiplier = 2.0
     end
-    
+
     local finalDamage = baseDamage * multiplier
     result.humanoid:TakeDamage(finalDamage)
 end
